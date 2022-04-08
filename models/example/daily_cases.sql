@@ -11,9 +11,9 @@
 
 with source_data as (
 
-    select 1 as id
-    union all
-    select null as id
+    select to_date(date) as reported_date, sum(new_cases) as confirmed_cases, sum(new_active_cases) as active_cases,
+sum(new_recovered) as recovered_cases, sum(new_deaths) as deceased_cases from FIVETRAN_DB.GOOGLE_SHEETS.COVID_19_INDONESIA_HARSHA_VARDHAN
+group by to_date(date) order by to_date(date)
 
 )
 
