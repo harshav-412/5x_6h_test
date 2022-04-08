@@ -1,0 +1,29 @@
+
+/*
+    Welcome to your first dbt model!
+    Did you know that you can also configure models directly within SQL files?
+    This will override configurations stated in dbt_project.yml
+
+    Try changing "table" to "view" below
+*/
+
+{{ config(materialized='table') }}
+
+with source_data as (
+
+    select location, to_date(date) as reported_date, sum(new_cases) as confirmed_cases, sum(new_active_cases) as active_cases,
+sum(new_recovered) as recovered_cases, sum(new_deaths) as deceased_cases
+     from FIVETRAN_DB.GOOGLE_SHEETS.COVID_19_INDONESIA_HARSHA_VARDHAN
+     group by to_date(date), location
+order by to_date(date), location
+
+)
+
+select *
+from source_data
+
+/*
+    Uncomment the line below to remove records with null `id` values
+*/
+
+-- where id is not null
